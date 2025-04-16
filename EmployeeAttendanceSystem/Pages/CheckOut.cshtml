@@ -1,0 +1,43 @@
+﻿@page
+@model CheckOutModel
+@{
+    ViewData["Title"] = "Attendance Check-Out";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Attendance Check-Out</h2>
+
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-info text-center">@Model.Message</div>
+    }
+
+    @if (Model.CheckOutTime == null)
+    {
+        <form method="post" class="card shadow-sm p-4">
+            <div class="mb-3">
+                <label class="form-label">Current Time</label>
+                <input type="text" class="form-control" value="@DateTime.Now.ToString("hh:mm tt")" readonly />
+            </div>
+
+            @if (DateTime.Now.TimeOfDay < new TimeSpan(15, 0, 0))
+            {
+                <div class="mb-3">
+                    <label class="form-label">Justification for Early Check-Out</label>
+                    <textarea asp-for="Justification" class="form-control" rows="4"></textarea>
+                    <span asp-validation-for="Justification" class="text-danger"></span>
+                </div>
+            }
+
+
+            <button type="submit" class="btn btn-danger w-100">Confirm Check Out</button>
+        </form>
+    }
+    else
+    {
+        <div class="card shadow-sm p-4 text-center">
+            <h5 class="mb-3">You have already checked out.</h5>
+            <p>Checked out at: <strong>@Model.CheckOutTime?.ToString("hh:mm tt")</strong></p>
+        </div>
+    }
+</div>

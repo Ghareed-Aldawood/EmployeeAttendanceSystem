@@ -1,0 +1,61 @@
+﻿@page
+@model ViewAttendanceModel
+@{
+    ViewData["Title"] = "My Attendance";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">My Attendance</h2>
+
+    @if (Model.Attendances.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle shadow-sm">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Date</th>
+                        <th>Check-In</th>
+                        <th>Check-Out</th>
+                        <th>Status</th>
+                        <th>Justification</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var attendance in Model.Attendances.OrderByDescending(a => a.Date))
+                    {
+                        <tr class="@(attendance.IsLateCheckIn || attendance.IsEarlyCheckOut ? "table-warning" : "")">
+                            <td>@attendance.Date.ToString("dd MMM yyyy")</td>
+                            <td>@(attendance.CheckIn?.ToString("hh:mm tt") ?? "-")</td>
+                            <td>@(attendance.CheckOut?.ToString("hh:mm tt") ?? "-")</td>
+                            <td>
+                                @if (attendance.IsLateCheckIn && attendance.IsEarlyCheckOut)
+                                {
+                                    <span class="badge bg-danger">Late In & Early Out</span>
+                                }
+                                else if (attendance.IsLateCheckIn)
+                                {
+                                    <span class="badge bg-warning text-dark">Late Check-In</span>
+                                }
+                                else if (attendance.IsEarlyCheckOut)
+                                {
+                                    <span class="badge bg-warning text-dark">Early Check-Out</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">On Time</span>
+                                }
+                            </td>
+                            <td>@(string.IsNullOrWhiteSpace(attendance.Justification) ? "-" : attendance.Justification)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            You have no attendance records yet.
+        </div>
+    }
+</div>

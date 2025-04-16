@@ -1,0 +1,30 @@
+﻿@page
+@model JustificationModel
+@{
+    ViewData["Title"] = "Write Justification";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm p-4">
+                <h3 class="text-center mb-4">Attendance Justification</h3>
+
+                <form method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Justification" class="form-label">Reason for Late Check-In / Early Check-Out</label>
+                        <textarea asp-for="Justification" class="form-control" rows="5" placeholder="Provide your justification here..."></textarea>
+                        <span asp-validation-for="Justification" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a asp-page="ViewAttendance" class="btn btn-secondary">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
